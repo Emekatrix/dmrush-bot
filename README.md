@@ -1,82 +1,71 @@
-# dmrush-bot
+# 🤖 DMRushBot
 
-DMRushBot is a Telegram bot that powers buyer-driven commerce using a unique Coin incentive system.
+DMRushBot is a Telegram bot that connects **buyers** and **sellers** using a unique coin-based interaction model. Buyers post items they want to purchase, and sellers send DM Coins to get access to pitch their offer directly in the buyer’s DMs.
 
-### 🔥 Key Features
-
-- 💬 Buyers post what they want to purchase
-- 🪙 Sellers send DM Coins to get 5-minute DM access
-- 💸 Buyers earn Coins and can cash out after a successful purchase
-- ⏳ 5-minute DM countdown logic per seller
-- 🔁 Automatic refunds if buyer doesn’t purchase
-- ⚙️ Admin commands: /banuser, /resetwallet, etc.
+Built with:
+- [Telebot](https://github.com/eternnoir/pyTelegramBotAPI)
+- [SQLite](https://www.sqlite.org/)
+- [Google Sheets](https://www.google.com/sheets/about/) (for logging/analytics)
+- Hosted on [Railway](https://railway.app/)
+- Deployed via [GitHub Webhooks](https://docs.github.com/en/webhooks)
 
 ---
 
-### 🚀 Technologies
+## 🛠 Features
 
-- **Telegram Bot** via [Telebot](https://github.com/eternnoir/pyTelegramBotAPI)
-- **Database:** SQLite
-- **Backend:** Python + Flask
-- **Bot Hosting:** [Railway](https://railway.app/)
-- **Google Sheets** (optional): As backend dashboard or storage
+- 💬 Coin-based direct messaging (DM) between buyers and sellers
+- ⏱️ Optional 5-minute DM countdown for offers
+- 💰 Seller wallet with Coin balance and limits
+- 🔁 Coin refund logic if no purchase happens
+- 🔐 Rate limiting and abuse protection
+- 👤 Admin commands for banning/resetting users
+- 📊 Logs all Coin transactions to Google Sheets
+- 🌐 Webhook-ready deployment via Railway
 
 ---
 
-### 📦 Project Structure
+## 📦 Setup & Deployment
 
-DMRushBot/
-├── .env.example                # Example env vars (for dev or Railway)
-├── .gitignore                 # Files to ignore in Git
-├── LICENSE                    # MIT License
-├── README.md                  # Project overview
-├── bot.py                     # Main Telegram bot logic
-├── database/
-│   └── db.sqlite              # SQLite database (runtime, auto-generated)
-├── handlers/
-│   ├── buyer.py               # Buyer-related commands (e.g. /postitem)
-│   ├── seller.py              # Seller actions (e.g. /sendcoin)
-│   └── admin.py               # Admin-only commands (/banuser, /resetwallet)
-├── models/
-│   ├── user.py                # DB model logic for users
-│   ├── wallet.py              # DB logic for coin handling
-│   └── transaction.py         # Logs and refunds
-├── services/
-│   ├── google_sheets.py       # Append logs to Google Sheets
-│   └── scheduler.py           # Refund timer logic (manual or cron)
-├── utils/
-│   ├── auth.py                # Authentication & permission utils
-│   ├── logger.py              # Logging for dev/debug
-│   └── constants.py           # Global constants & configs
-├── .railway/
-│   └── project.json           # Railway bootstrapping
-└── requirements.txt           # Python package dependencies
----
+### 1. Clone the Repository
+```bash
+git clone https://github.com/YOUR_USERNAME/DMRushBot.git
+cd DMRushBot
 
-### ⚙️ Environment Variables
+2. Set Your Environment Variables
+In Railway or locally, configure the following:
+BOT_TOKEN – Your Telegram bot token from @BotFather
+GOOGLE_SERVICE_ACCOUNT – JSON string of your Google Sheets service account
+SHEET_ID – Google Sheet ID for logging
+ADMIN_IDS – Comma-separated Telegram user IDs of admins
+You can place these in .env for local development:
+BOT_TOKEN=123456:ABC-your-telegram-token
+GOOGLE_SERVICE_ACCOUNT={...}
+SHEET_ID=your_google_sheet_id
+ADMIN_IDS=12345678,987654321
 
-Create a `.env` file with the following:
+3. Deploy on Railway
+Push the repo to GitHub
+Go to Railway
+Click "New Project" > "Deploy from GitHub Repo"
+Add environment variables in Railway Dashboard
+Click Deploy
 
-```env
-TELEGRAM_BOT_TOKEN=your_bot_token_here
-GOOGLE_SHEET_ID=optional_google_sheet_id
+🧩 Commands
+Command         Description
+/start          Register user and create wallet
+/postitem       Buyer posts item to buy
+/sendcoin       Seller sends Coin to buyer
+/acceptcoin     Buyer accepts a seller's Coin offer
+/wallet         View wallet balance and transactions
+/refunds        Manual refund check (admin only)
+/banuser        Ban abusive user (admin only)
+/resetwallet    Reset a user’s wallet (admin only)
 
 
-🛠️ Deployment (Railway)
-Create a Railway account
-Link this GitHub repo
-Add your .env variables
-Deploy the bot 🚀
+📄 License
+This project is licensed under the MIT License.
 
-📖 Admin Commands
-/banuser <@username> – Ban abusive users
-/resetwallet <@username> – Reset user's wallet
-/refundcoins – Trigger refund manually
-
-👨‍🔧 Author
+👤 Author
 Emeka Nzeribe
-Telegram: @DMRushBot
-License: MIT
-
-🤝 Contribute
-Pull requests welcome. For major changes, please open an issue first.
+DMRushBot Creator
+📧 sir.emekanzeribe@gmail.com
