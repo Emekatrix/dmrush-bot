@@ -1,13 +1,15 @@
-import telebot
+# set_webhook.py
 import os
+import requests
 
-BOT_TOKEN = os.environ['BOT_TOKEN']
-RAILWAY_URL = os.environ['RAILWAY_PUBLIC_DOMAIN']  # e.g., https://dmrushbot.up.railway.app
+BOT_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
+RAILWAY_URL = os.getenv("RAILWAY_URL")  # e.g., "https://dmrushbot.up.railway.app"
+WEBHOOK_PATH = "/webhook"  # must match your FastAPI POST route
 
-bot = telebot.TeleBot(BOT_TOKEN)
+webhook_url = f"{RAILWAY_URL}{WEBHOOK_PATH}"
+telegram_api_url = f"https://api.telegram.org/bot{BOT_TOKEN}/setWebhook"
 
-webhook_url = f"{RAILWAY_PUBLIC_DOMAIN}/webhook"
-bot.remove_webhook()
-success = bot.set_webhook(url=webhook_url)
+response = requests.post(telegram_api_url, json={"url": webhook_url})
 
-print("Webhook set:", success)
+print("Set webhook status:", response.status_code)
+print("Response:", response.json())
