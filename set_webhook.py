@@ -7,7 +7,7 @@ RAILWAY_URL = os.environ['RAILWAY_URL']  # e.g., https://dmrushbot.up.railway.ap
 bot = telebot.TeleBot(BOT_TOKEN)
 
 webhook_url = f"{RAILWAY_URL}/webhook"
-success = bot.remove_webhook()
+bot.remove_webhook()
 success = bot.set_webhook(url=webhook_url)
 
 print("Webhook set:", success)
