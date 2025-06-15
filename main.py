@@ -4,7 +4,7 @@ from bot import bot
 
 app = FastAPI()
 
-@app.post("/")
+@app.post("/webhook")
 async def handle_webhook(request: Request):
     body = await request.body()
     update = telebot.types.Update.de_json(body.decode("utf-8"))
