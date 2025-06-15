@@ -192,3 +192,13 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Telegram bot token & sensitive config
+config.json
+
+# Railway project configuration
+.railway/
+
+# Additional SQLite files
+*.sqlite
+*.db
