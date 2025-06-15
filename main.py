@@ -1,35 +1,12 @@
-from flask import Flask, request
+from fastapi import FastAPI, Request
 import telebot
-import os
+from bot import bot
 
-TOKEN = os.getenv("BOT_TOKEN")  # Set in Railway Environment Variables
-bot = telebot.TeleBot(TOKEN)
-app = Flask(__name__)
+app = FastAPI()
 
-# Define a basic command
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "Welcome to DMRushBot!")
-
-# Webhook route
-@app.route(f"/{TOKEN}", methods=['POST'])
-def webhook():
-    json_str = request.get_data().decode('utf-8')
-    update = telebot.types.Update.de_json(json_str)
+@app.post("/")
+async def handle_webhook(request: Request):
+    body = await request.body()
+    update = telebot.types.Update.de_json(body.decode("utf-8"))
     bot.process_new_updates([update])
-    return 'OK', 200
-
-# Set webhook when the server starts
-@app.before_first_request
-def set_webhook():
-    webhook_url = os.getenv("WEBHOOK_URL")  # Set this in Railway as well
-    bot.remove_webhook()
-    bot.set_webhook(url=f"{webhook_url}/{TOKEN}")
-
-# Default route
-@app.route('/')
-def index():
-    return "DMRushBot is running."
-
-if __name__ == "__main__":
-    app.run(debug=False, port=int(os.environ.get('PORT', 5000)), host='0.0.0.0')
+    return {"status": "ok"}
