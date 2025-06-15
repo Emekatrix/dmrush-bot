@@ -8,7 +8,7 @@ from flask import Flask, request
 with open("config.json", "r") as f:
     config = json.load(f)
 
-BOT_TOKEN = config["BOT_TOKEN"]
+BOT_TOKEN = os.environ.get["BOT_TOKEN"]
 bot = TeleBot(BOT_TOKEN)
 app = Flask(__name__)
 
