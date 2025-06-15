@@ -1,7 +1,7 @@
 import telebot
 import os
 
-BOT_TOKEN = os.environ['7566858562:AAF8oJ-UTT-w_8DfeovKwKOGHouVEAMwm9M']
+BOT_TOKEN = os.environ['BOT_TOKEN']
 RAILWAY_URL = os.environ['web-production-10e05.up.railway.app']  # e.g., https://dmrushbot.up.railway.app
 
 bot = telebot.TeleBot(BOT_TOKEN)
