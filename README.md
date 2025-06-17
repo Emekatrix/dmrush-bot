@@ -9,26 +9,26 @@ The project is designed for one-click deployment on Railway with a production-gr
 ## ✨ Features
 
 Bot UX                      
-`/start` greets and creates a wallet 
-Echo handler for quick testing 
-Easily extend with new commands & inline keyboards
+- `/start` greets and creates a wallet 
+- Echo handler for quick testing 
+- Easily extend with new commands & inline keyboards
 
 Architecture  
-`python-telegram-bot` async core 
-FastAPI receives webhooks 
-PostgreSQL via Railway plugin 
-Tortoise ORM models & migrations
+- `python-telegram-bot` async core 
+- FastAPI receives webhooks 
+- PostgreSQL via Railway plugin 
+- Tortoise ORM models & migrations
 
 Dev Experience 
-Hot-reload locally with Uvicorn 
-`.env` config 
-Typed models 
-Clean repo structure
+- Hot-reload locally with Uvicorn 
+- `.env` config 
+- Typed models 
+- Clean repo structure
 
 Deployment 
-100 % Railway-ready (Procfile, requirements) 
-One-time `run_once.py` to set webhook 
-Automatic DB schema generation |
+- 100 % Railway-ready (Procfile, requirements) 
+- One-time `run_once.py` to set webhook 
+- Automatic DB schema generation |
 
 ---
 
@@ -72,7 +72,7 @@ uvicorn main:app --reload
 Navigate to http://localhost:8000/api/docs for automatic Swagger docs.
 
 
-🛠 **Environment Variables**
+🛠 Environment Variables
 
 Key: TELEGRAM_API_TOKEN
 Purpose: Bot token from @BotFather
@@ -87,7 +87,7 @@ Purpose: PostgreSQL URI (Railway plugin auto-creates)
 Example: postgresql://user:pass@host:5432/db
 
 
-🐘 **Database Models (Tortoise)**
+🐘 Database Models (Tortoise)
 class            User(models.Model):
  id           =   fields.IntField(pk=True)
  telegram_id  =   fields.BigIntField(unique=True)
@@ -104,7 +104,7 @@ class            Message(models.Model):
 On startup, generate_schemas=True auto-creates the tables.
 
 
-☁️ **Deploy on Railway (Production)**
+☁️ Deploy on Railway (Production)
 
 1. Fork / push this repo to GitHub.
 
@@ -124,7 +124,7 @@ On startup, generate_schemas=True auto-creates the tables.
 
 
 
-🔧 **Extending the Bot**
+🔧 Extending the Bot
 
 Task: New command
 Where?: bot/handlers.py
@@ -144,6 +144,6 @@ Hint: Use pytest + asyncio
 
 
 
-⚖️ **License**
+⚖️ License
 MIT © 2025 Emeka Nzeribe DMRushBot Creator
 📧 sir.emekanzeribe@gmail.com
