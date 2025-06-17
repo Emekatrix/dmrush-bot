@@ -1,71 +1,149 @@
 # 🤖 DMRushBot
 
-DMRushBot is a Telegram bot that connects **buyers** and **sellers** using a unique coin-based interaction model. Buyers post items they want to purchase, and sellers send DM Coins to get access to pitch their offer directly in the buyer’s DMs.
-
-Built with:
-- [Telebot](https://github.com/eternnoir/pyTelegramBotAPI)
-- [SQLite](https://www.sqlite.org/)
-- [Google Sheets](https://www.google.com/sheets/about/) (for logging/analytics)
-- Hosted on [Railway](https://railway.app/)
-- Deployed via [GitHub Webhooks](https://docs.github.com/en/webhooks)
+DMRushBot is a Telegram bot that connects buyers and sellers using a coin-based DM economy.  
+It’s built with **python-telegram-bot v21** (async), served by FastAPI, and stores data in PostgreSQL via Tortoise ORM.  
+The project is designed for one-click deployment on Railway with a production-grade webhook.
 
 ---
 
-## 🛠 Features
+## ✨ Features
 
-- 💬 Coin-based direct messaging (DM) between buyers and sellers
-- ⏱️ Optional 5-minute DM countdown for offers
-- 💰 Seller wallet with Coin balance and limits
-- 🔁 Coin refund logic if no purchase happens
-- 🔐 Rate limiting and abuse protection
-- 👤 Admin commands for banning/resetting users
-- 📊 Logs all Coin transactions to Google Sheets
-- 🌐 Webhook-ready deployment via Railway
+Bot UX                      
+`/start` greets and creates a wallet 
+Echo handler for quick testing 
+Easily extend with new commands & inline keyboards
+
+Architecture  
+`python-telegram-bot` async core 
+FastAPI receives webhooks 
+PostgreSQL via Railway plugin 
+Tortoise ORM models & migrations
+
+Dev Experience 
+Hot-reload locally with Uvicorn 
+`.env` config 
+Typed models 
+Clean repo structure
+
+Deployment 
+100 % Railway-ready (Procfile, requirements) 
+One-time `run_once.py` to set webhook 
+Automatic DB schema generation |
 
 ---
 
-## 📦 Setup & Deployment
+## 🗂 Project Structure
 
-### 1. Clone the Repository
+DMRushBot/
+├── bot/                     # All bot-related logic
+│   ├── __init__.py
+│   ├── handlers.py          # Telegram command/message handlers
+│   └── models.py            # Tortoise ORM models (User, Message)
+│
+├── .env.example             # Example .env (for development)
+├── main.py                  # FastAPI app and webhook setup
+├── requirements.txt         # All dependencies
+├── Procfile                 # For Railway deployment
+├── runtime.txt              # Optional (used by some platforms)
+├── README.md                # Setup & usage instructions
+
+---
+
+## 🚀 Quick Start (Local)
+
 ```bash
-git clone https://github.com/YOUR_USERNAME/DMRushBot.git
-cd DMRushBot
+# 1. Clone
+git clone https://github.com/YOUR-ORG/DMRushBot.git && cd DMRushBot
 
-2. Set Your Environment Variables
-In Railway or locally, configure the following:
-BOT_TOKEN – Your Telegram bot token from @BotFather
-GOOGLE_SERVICE_ACCOUNT – JSON string of your Google Sheets service account
-SHEET_ID – Google Sheet ID for logging
-ADMIN_IDS – Comma-separated Telegram user IDs of admins
-You can place these in .env for local development:
-BOT_TOKEN=123456:ABC-your-telegram-token
-GOOGLE_SERVICE_ACCOUNT={...}
-SHEET_ID=your_google_sheet_id
-ADMIN_IDS=12345678,987654321
+# 2. Create venv
+python -m venv .venv && source .venv/bin/activate
 
-3. Deploy on Railway
-Push the repo to GitHub
-Go to Railway
-Click "New Project" > "Deploy from GitHub Repo"
-Add environment variables in Railway Dashboard
-Click Deploy
+# 3. Install deps
+pip install -r requirements.txt
 
-🧩 Commands
-Command         Description
-/start          Register user and create wallet
-/postitem       Buyer posts item to buy
-/sendcoin       Seller sends Coin to buyer
-/acceptcoin     Buyer accepts a seller's Coin offer
-/wallet         View wallet balance and transactions
-/refunds        Manual refund check (admin only)
-/banuser        Ban abusive user (admin only)
-/resetwallet    Reset a user’s wallet (admin only)
+# 4. Copy env template
+cp .env.example .env
+# ➡️ Fill TELEGRAM_API_TOKEN, RAILWAY_URL (e.g. http://localhost:8000), DATABASE_URL
+
+# 5. Launch dev server
+uvicorn main:app --reload
+
+---
+Navigate to http://localhost:8000/api/docs for automatic Swagger docs.
 
 
-📄 License
-This project is licensed under the MIT License.
+🛠 **Environment Variables**
 
-👤 Author
-Emeka Nzeribe
-DMRushBot Creator
+Key: TELEGRAM_API_TOKEN
+Purpose: Bot token from @BotFather
+Example: 123456:ABC...
+
+Key: RAILWAY_URL
+Purpose: Public base URL (Railway gives you this)
+Example: https://dmrushbot.up.railway.app
+
+Key: DATABASE_URL
+Purpose: PostgreSQL URI (Railway plugin auto-creates)
+Example: postgresql://user:pass@host:5432/db
+
+
+🐘 **Database Models (Tortoise)**
+class            User(models.Model):
+ id           =   fields.IntField(pk=True)
+ telegram_id  =   fields.BigIntField(unique=True)
+ username     =   fields.CharField(255, null=True)
+ first_name   =   fields.CharField(255, null=True)
+ last_name    =   fields.CharField(255, null=True)
+
+class            Message(models.Model):
+ id           =   fields.IntField(pk=True)
+ user         =   fields.ForeignKeyField("models.User", related_name="messages")
+ text         =   fields.TextField()
+ timestamp    =   fields.DatetimeField(auto_now_add=True)
+
+On startup, generate_schemas=True auto-creates the tables.
+
+
+☁️ **Deploy on Railway (Production)**
+
+1. Fork / push this repo to GitHub.
+
+2. Create new project → “Deploy from GitHub repo”.
+
+3. Add PostgreSQL plugin (DATABASE_URL appears automatically).
+
+4. Add variables → TELEGRAM_API_TOKEN and RAILWAY_URL (your Railway domain).
+
+5. Railway builds & starts via the Procfile:
+   web: uvicorn main:app --host 0.0.0.0 --port $PORT
+
+6. Open the Railway Shell and run:
+   python run_once.py   # sets Telegram webhook exactly once
+
+7. Send /start to your bot 🎉
+
+
+
+🔧 **Extending the Bot**
+
+Task: New command
+Where?: bot/handlers.py
+Hint: Add CommandHandler
+
+Task: DM-coin logic
+Where?: new file in bot/
+Hint: Import models, update DB
+
+Task: Migrations
+Where?: tortoise-orm CLI
+Hint: Or rely on generate_schemas
+
+Task: Tests
+Where?: tests/ dir
+Hint: Use pytest + asyncio
+
+
+
+⚖️ **License**
+MIT © 2025 Emeka Nzeribe DMRushBot Creator
 📧 sir.emekanzeribe@gmail.com
