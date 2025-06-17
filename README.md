@@ -34,7 +34,7 @@ Deployment
 
 ## 🗂 Project Structure
 
-```DMRushBot/
+```text DMRushBot/
 ├── bot/                     # All bot-related logic
 │   ├── __init__.py
 │   ├── handlers.py          # Telegram command/message handlers
@@ -51,7 +51,7 @@ Deployment
 
 ## 🚀 Quick Start (Local)
 
-```bash
+bash
 # 1. Clone
 git clone https://github.com/YOUR-ORG/DMRushBot.git && cd DMRushBot
 
