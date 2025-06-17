@@ -34,7 +34,7 @@ Deployment
 
 ## 🗂 Project Structure
 
-DMRushBot/
+```DMRushBot/
 ├── bot/                     # All bot-related logic
 │   ├── __init__.py
 │   ├── handlers.py          # Telegram command/message handlers
@@ -45,7 +45,7 @@ DMRushBot/
 ├── requirements.txt         # All dependencies
 ├── Procfile                 # For Railway deployment
 ├── runtime.txt              # Optional (used by some platforms)
-├── README.md                # Setup & usage instructions
+├── README.md                # Setup & usage instructions```
 
 ---
 
